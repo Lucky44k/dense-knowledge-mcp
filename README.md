@@ -15,8 +15,8 @@ are planned, but are not written yet.
 Python 3.11 or newer is required.
 
 ```bash
-git clone https://github.com/Lucky44k/Dense-Knowledge.git
-cd Dense-Knowledge
+git clone https://github.com/Lucky44k/dense-knowledge-mcp.git
+cd dense-knowledge-mcp
 ./scripts/install.sh
 mmp setup
 mmp doctor
@@ -177,5 +177,9 @@ python -m build
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution notes and
 [SECURITY.md](SECURITY.md) for private vulnerability reports.
+
+Releases follow [Semantic Versioning](https://semver.org/). The package version
+is defined in `src/mmp/__init__.py`; Git tags use the corresponding `v1.2.3`
+form. Release notes are kept in [CHANGELOG.md](CHANGELOG.md).
 
 Licensed under the [MIT License](LICENSE).

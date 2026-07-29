@@ -453,7 +453,6 @@ wheels = [
 
 [[package]]
 name = "model-module-protocol"
-version = "1.0.0"
 source = { editable = "." }
 
 [package.optional-dependencies]
@@ -481,7 +480,7 @@ requires-dist = [
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=5.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11" },
 ]
-provides-extras = ["language", "mcp", "dev"]
+provides-extras = ["dev", "language", "mcp"]
 
 [[package]]
 name = "numpy"

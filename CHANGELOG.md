@@ -1,12 +1,13 @@
 # Changelog
 
-## Unreleased
+## [Unreleased]
 
-- Add guided local setup and persistent user configuration.
-- Add `mmp doctor` for installation and package checks.
+## [1.0.0] - 2026-07-29
+
+- Implement the MMP/1.0 flat file format and all nine MCP operations.
+- Add BM25 retrieval, validation, append-only updates, and safe MCP envelopes.
+- Add guided setup, persistent user configuration, and `mmp doctor`.
 - Add safe LM Studio configuration merging with backups.
 
-## 1.0.0
-
-- Initial implementation of the MMP/1.0 flat file format.
-- Add the nine MMP operations, BM25 retrieval, validation, and MCP transport.
+[Unreleased]: https://github.com/Lucky44k/dense-knowledge-mcp/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Lucky44k/dense-knowledge-mcp/releases/tag/v1.0.0
