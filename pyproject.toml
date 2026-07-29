@@ -3,14 +3,14 @@ requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
-name = "model-module-protocol"
+name = "dense-knowledge-mcp"
 dynamic = ["version"]
-description = "Portable, append-only research memory for language models"
+description = "Local, append-only knowledge storage and retrieval for language models"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Lucky44k" }]
-dependencies = []
+dependencies = ["langid>=1.1.6", "mcp>=1.2.0,<2"]
 keywords = ["llm", "mcp", "knowledge-management", "retrieval"]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -30,11 +30,10 @@ Repository = "https://github.com/Lucky44k/dense-knowledge-mcp"
 Issues = "https://github.com/Lucky44k/dense-knowledge-mcp/issues"
 
 [project.optional-dependencies]
-language = ["langid>=1.1.6"]
-mcp = ["mcp>=1.2.0,<2", "langid>=1.1.6"]
 dev = ["build>=1.2", "pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.11"]
 
 [project.scripts]
+dense-knowledge-mcp = "mmp.server:main"
 mmp = "mmp.cli:main"
 mmp-server = "mmp.server:main"
 

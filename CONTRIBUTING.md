@@ -9,7 +9,7 @@ impact can be discussed.
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install -e ".[mcp,dev]"
+python -m pip install -e ".[dev]"
 pytest
 ruff check src tests
 ```

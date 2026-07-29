@@ -10,9 +10,21 @@ they are relevant. The files remain portable, diffable, and usable offline.
 The project currently implements the flat MMP/1.0 format. Hierarchical indexes
 are planned, but are not written yet.
 
+<!-- mcp-name: io.github.lucky44k/dense-knowledge-mcp -->
+
 ## Install
 
 Python 3.11 or newer is required.
+
+Install the published package:
+
+```bash
+uv tool install dense-knowledge-mcp
+mmp setup
+mmp doctor
+```
+
+To install from source instead:
 
 ```bash
 git clone https://github.com/Lucky44k/dense-knowledge-mcp.git
@@ -169,7 +181,7 @@ is ignored by Git.
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install -e ".[mcp,dev]"
+python -m pip install -e ".[dev]"
 pytest
 ruff check src tests
 python -m build

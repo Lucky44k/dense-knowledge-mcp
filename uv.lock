@@ -326,6 +326,33 @@ wheels = [
 ]
 
 [[package]]
+name = "dense-knowledge-mcp"
+source = { editable = "." }
+dependencies = [
+    { name = "langid" },
+    { name = "mcp" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "build" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "build", marker = "extra == 'dev'", specifier = ">=1.2" },
+    { name = "langid", specifier = ">=1.1.6" },
+    { name = "mcp", specifier = ">=1.2.0,<2" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
+    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=5.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11" },
+]
+provides-extras = ["dev"]
+
+[[package]]
 name = "h11"
 version = "0.16.0"
 source = { registry = "https://pypi.org/simple" }
@@ -450,37 +477,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/30/d3/f9acc21dfc886e4f7
 wheels = [
     { url = "https://files.pythonhosted.org/packages/01/c8/248b201f6d753d69fd5d6506011abbb35a946d9142b2ae311a948fd0be3d/mcp-1.29.0-py3-none-any.whl", hash = "sha256:f5a075bb611f23d6f4d080c6a1699fa62772eebc562ba9e66b306ddde1c755f7", size = 223436, upload-time = "2026-07-28T13:41:40.337Z" },
 ]
-
-[[package]]
-name = "model-module-protocol"
-source = { editable = "." }
-
-[package.optional-dependencies]
-dev = [
-    { name = "build" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "ruff" },
-]
-language = [
-    { name = "langid" },
-]
-mcp = [
-    { name = "langid" },
-    { name = "mcp" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "build", marker = "extra == 'dev'", specifier = ">=1.2" },
-    { name = "langid", marker = "extra == 'language'", specifier = ">=1.1.6" },
-    { name = "langid", marker = "extra == 'mcp'", specifier = ">=1.1.6" },
-    { name = "mcp", marker = "extra == 'mcp'", specifier = ">=1.2.0,<2" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=5.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11" },
-]
-provides-extras = ["dev", "language", "mcp"]
 
 [[package]]
 name = "numpy"

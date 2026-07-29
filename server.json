@@ -1,0 +1,33 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.lucky44k/dense-knowledge-mcp",
+  "title": "Dense Knowledge",
+  "description": "Local, append-only knowledge storage with selective retrieval for language models.",
+  "repository": {
+    "url": "https://github.com/Lucky44k/dense-knowledge-mcp",
+    "source": "github",
+    "id": "1316509848"
+  },
+  "version": "1.1.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "dense-knowledge-mcp",
+      "version": "1.1.0",
+      "runtimeHint": "uvx",
+      "packageArguments": [
+        {
+          "type": "named",
+          "name": "--root",
+          "description": "Directory containing MMP knowledge packages.",
+          "format": "filepath",
+          "isRequired": true,
+          "placeholder": "/absolute/path/to/memory"
+        }
+      ],
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

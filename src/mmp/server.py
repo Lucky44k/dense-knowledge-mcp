@@ -36,8 +36,7 @@ def create_server(root: str | os.PathLike[str]):
         from mcp.server.fastmcp import FastMCP
     except ImportError as exc:
         raise RuntimeError(
-            "MCP support is optional. Install with: pip install "
-            "'model-module-protocol[mcp]'"
+            "MCP support is missing. Install with: pip install dense-knowledge-mcp"
         ) from exc
 
     store = MMPStore(root)

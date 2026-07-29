@@ -4,9 +4,9 @@ set -eu
 project_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 
 if command -v uv >/dev/null 2>&1; then
-    uv tool install --force "${project_dir}[mcp]"
+    uv tool install --force "$project_dir"
 elif command -v pipx >/dev/null 2>&1; then
-    pipx install --force "${project_dir}[mcp]"
+    pipx install --force "$project_dir"
 else
     python_bin=${PYTHON:-python3}
     data_dir=${XDG_DATA_HOME:-"$HOME/.local/share"}
@@ -15,7 +15,7 @@ else
 
     "$python_bin" -m venv "$install_dir"
     "$install_dir/bin/python" -m pip install --upgrade pip
-    "$install_dir/bin/python" -m pip install "${project_dir}[mcp]"
+    "$install_dir/bin/python" -m pip install "$project_dir"
     mkdir -p "$bin_dir"
     ln -sf "$install_dir/bin/mmp" "$bin_dir/mmp"
     ln -sf "$install_dir/bin/mmp-server" "$bin_dir/mmp-server"
