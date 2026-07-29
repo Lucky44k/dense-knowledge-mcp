@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-30
+
+- Reposition the project around discoverable MCP memory use cases.
+- Add setup guides for LM Studio, Claude Desktop, Cursor, and VS Code.
+- Add a runnable selective-retrieval context benchmark and example dataset.
+- Expand GitHub and PyPI metadata for relevant search terms.
+- Use the platform data directory when no explicit root is configured.
+
 ## [1.1.1] - 2026-07-29
 
 - Match the case-sensitive MCP Registry namespace issued by GitHub OIDC.
@@ -20,7 +28,8 @@
 - Add guided setup, persistent user configuration, and `mmp doctor`.
 - Add safe LM Studio configuration merging with backups.
 
-[Unreleased]: https://github.com/Lucky44k/dense-knowledge-mcp/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/Lucky44k/dense-knowledge-mcp/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/Lucky44k/dense-knowledge-mcp/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/Lucky44k/dense-knowledge-mcp/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/Lucky44k/dense-knowledge-mcp/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Lucky44k/dense-knowledge-mcp/releases/tag/v1.0.0

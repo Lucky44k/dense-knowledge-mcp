@@ -5,13 +5,25 @@ build-backend = "hatchling.build"
 [project]
 name = "dense-knowledge-mcp"
 dynamic = ["version"]
-description = "Local, append-only knowledge storage and retrieval for language models"
+description = "Local-first MCP memory server for persistent LLM knowledge and BM25 retrieval"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Lucky44k" }]
 dependencies = ["langid>=1.1.6", "mcp>=1.2.0,<2"]
-keywords = ["llm", "mcp", "knowledge-management", "retrieval"]
+keywords = [
+  "ai-agents",
+  "bm25",
+  "knowledge-base",
+  "knowledge-management",
+  "llm",
+  "llm-memory",
+  "local-first",
+  "mcp",
+  "mcp-server",
+  "persistent-memory",
+  "retrieval",
+]
 classifiers = [
   "Development Status :: 4 - Beta",
   "License :: OSI Approved :: MIT License",
@@ -26,8 +38,10 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/Lucky44k/dense-knowledge-mcp"
+Documentation = "https://github.com/Lucky44k/dense-knowledge-mcp#readme"
 Repository = "https://github.com/Lucky44k/dense-knowledge-mcp"
 Issues = "https://github.com/Lucky44k/dense-knowledge-mcp/issues"
+Changelog = "https://github.com/Lucky44k/dense-knowledge-mcp/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = ["build>=1.2", "pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.11"]

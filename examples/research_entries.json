@@ -1,0 +1,41 @@
+[
+  {
+    "summary": "Bell inequality separates local realism from quantum predictions",
+    "tags": [
+      "BI",
+      "nonlocality",
+      "experimental tests"
+    ],
+    "status": "F",
+    "srcs": [
+      {
+        "author_or_venue": "Bell",
+        "title": "On the Einstein Podolsky Rosen paradox",
+        "year": "1964",
+        "identifier": "doi:10.1103/PhysicsPhysiqueFizika.1.195"
+      }
+    ],
+    "legend": {
+      "BI": "Bell inequality"
+    },
+    "content": "def: BI = bound on local hidden variable correlations\nfact: quantum predictions -> violation of local realism bound\nrel: experimental tests + spacelike separation -> locality assessment"
+  },
+  {
+    "summary": "Measurement interpretation remains disputed across quantum frameworks",
+    "tags": [
+      "measurement",
+      "interpretation",
+      "wavefunction"
+    ],
+    "status": "C",
+    "srcs": [
+      {
+        "author_or_venue": "Stanford Encyclopedia of Philosophy",
+        "title": "The Role of Decoherence in Quantum Mechanics",
+        "year": "2024",
+        "identifier": "https://plato.stanford.edu/entries/qm-decoherence/"
+      }
+    ],
+    "content": "def: measurement problem = definite outcomes from quantum superposition\nrel: environmental decoherence -> suppression of observable interference\nctr: decoherence explains effective classicality != selects one unique outcome\nq: interpretation of definite outcomes -> framework dependent"
+  }
+]
