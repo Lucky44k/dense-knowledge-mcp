@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-07-29
+
+- Match the case-sensitive MCP Registry namespace issued by GitHub OIDC.
+- Resolve the PyPI version dynamically in the registry publishing workflow.
+
 ## [1.1.0] - 2026-07-29
 
 - Publish under the `dense-knowledge-mcp` package name.
@@ -15,6 +20,7 @@
 - Add guided setup, persistent user configuration, and `mmp doctor`.
 - Add safe LM Studio configuration merging with backups.
 
-[Unreleased]: https://github.com/Lucky44k/dense-knowledge-mcp/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/Lucky44k/dense-knowledge-mcp/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/Lucky44k/dense-knowledge-mcp/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/Lucky44k/dense-knowledge-mcp/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Lucky44k/dense-knowledge-mcp/releases/tag/v1.0.0

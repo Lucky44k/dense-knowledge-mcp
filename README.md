@@ -10,7 +10,7 @@ they are relevant. The files remain portable, diffable, and usable offline.
 The project currently implements the flat MMP/1.0 format. Hierarchical indexes
 are planned, but are not written yet.
 
-<!-- mcp-name: io.github.lucky44k/dense-knowledge-mcp -->
+<!-- mcp-name: io.github.Lucky44k/dense-knowledge-mcp -->
 
 ## Install
 

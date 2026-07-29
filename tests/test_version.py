@@ -5,7 +5,7 @@ from pathlib import Path
 from mmp import __version__
 
 ROOT = Path(__file__).parents[1]
-REGISTRY_NAME = "io.github.lucky44k/dense-knowledge-mcp"
+REGISTRY_NAME = "io.github.Lucky44k/dense-knowledge-mcp"
 
 
 def test_package_metadata_matches_runtime_version() -> None:
