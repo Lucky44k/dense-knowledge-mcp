@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from mmp.cli import build_parser, run
+from mmp.config import resolve_root
 from mmp.errors import ValidationError
 
 
@@ -61,6 +62,16 @@ def test_configured_root_is_used_by_default(tmp_path: Path, monkeypatch) -> None
 
     assert "CREATED" in run(created)
     assert (memory / "notes.mmp").is_file()
+
+
+def test_platform_data_directory_is_used_without_configuration(
+    tmp_path: Path, monkeypatch
+) -> None:
+    monkeypatch.setenv("MMP_CONFIG", str(tmp_path / "missing-config.toml"))
+    monkeypatch.setenv("XDG_DATA_HOME", str(tmp_path / "data"))
+    monkeypatch.delenv("MMP_ROOT", raising=False)
+
+    assert resolve_root() == (tmp_path / "data" / "mmp" / "memory").resolve()
 
 
 def test_doctor_reports_healthy_setup(tmp_path: Path, monkeypatch) -> None:

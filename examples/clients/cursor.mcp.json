@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "dense-knowledge": {
+      "command": "uvx",
+      "args": [
+        "dense-knowledge-mcp",
+        "--root",
+        "/absolute/path/to/memory"
+      ]
+    }
+  }
+}

@@ -1,22 +1,90 @@
 # Dense Knowledge
 
-Dense Knowledge is a small local server for Model Module Protocol (MMP) files.
-It gives language models a persistent research memory without requiring a
-database, embeddings, or a hosted service.
-
-An MMP client reads a compact index first and fetches full entries only when
-they are relevant. The files remain portable, diffable, and usable offline.
-
-The project currently implements the flat MMP/1.0 format. Hierarchical indexes
-are planned, but are not written yet.
-
 <!-- mcp-name: io.github.Lucky44k/dense-knowledge-mcp -->
 
-## Install
+[![PyPI](https://img.shields.io/pypi/v/dense-knowledge-mcp)](https://pypi.org/project/dense-knowledge-mcp/)
+[![Python](https://img.shields.io/pypi/pyversions/dense-knowledge-mcp)](https://pypi.org/project/dense-knowledge-mcp/)
+[![CI](https://github.com/Lucky44k/dense-knowledge-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Lucky44k/dense-knowledge-mcp/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Python 3.11 or newer is required.
+**A local-first MCP memory server for persistent LLM knowledge.**
 
-Install the published package:
+Dense Knowledge lets an AI assistant keep structured research between sessions
+without a database, embedding model, or hosted account. It stores portable
+`.mmp` files, searches their compact indexes with BM25, and loads full entries
+only when they are relevant.
+
+```text
+question -> compact index/search -> selected knowledge blocks -> answer
+             inexpensive             detailed context
+```
+
+It works with LM Studio, Claude Desktop, Cursor, VS Code, and other clients that
+support local stdio [Model Context Protocol](https://modelcontextprotocol.io/)
+servers.
+
+## Why Dense Knowledge?
+
+- **Selective context:** index first, body blocks only on demand.
+- **Local and portable:** plain ASCII-in-UTF-8 files that can be copied,
+  inspected, diffed, and backed up.
+- **No vector infrastructure:** deterministic BM25 search with abbreviation
+  and synonym expansion.
+- **Append-only history:** updates supersede older entries instead of erasing
+  them.
+- **Explicit provenance:** established and contested claims carry source IDs;
+  unsourced inferences are marked as hypotheses.
+- **Safer retrieval:** stored text is wrapped as untrusted data and screened
+  for common prompt-injection contamination.
+
+The bundled [context benchmark](benchmarks/) uses 40 entries. In its synthetic
+fixture, searching and reading the two best blocks uses **94.3% less estimated
+context** than loading the complete package. The benchmark is reproducible and
+clearly documents its tokenizer-neutral counting method.
+
+## Quick start
+
+Install [`uv`](https://docs.astral.sh/uv/getting-started/installation/), then
+place this server definition in your MCP client:
+
+```json
+{
+  "mcpServers": {
+    "dense-knowledge": {
+      "command": "uvx",
+      "args": ["dense-knowledge-mcp"]
+    }
+  }
+}
+```
+
+`uvx` downloads the published package when needed. Dense Knowledge uses the
+platform's default data directory unless `--root` is supplied:
+
+```json
+{
+  "mcpServers": {
+    "dense-knowledge": {
+      "command": "uvx",
+      "args": [
+        "dense-knowledge-mcp",
+        "--root",
+        "/absolute/path/to/memory"
+      ]
+    }
+  }
+}
+```
+
+Configuration differs slightly between clients. Ready-to-copy instructions are
+available for:
+
+- [LM Studio](docs/clients.md#lm-studio)
+- [Claude Desktop](docs/clients.md#claude-desktop)
+- [Cursor](docs/clients.md#cursor)
+- [Visual Studio Code](docs/clients.md#visual-studio-code)
+
+To install the command-line tools permanently:
 
 ```bash
 uv tool install dense-knowledge-mcp
@@ -24,142 +92,104 @@ mmp setup
 mmp doctor
 ```
 
-To install from source instead:
+`mmp setup` creates the memory directory and can safely merge the server into
+an LM Studio `mcp.json`. Existing servers are preserved. Replacing an existing
+Dense Knowledge entry requires `--force` and creates a backup first.
+
+## See it work
+
+The CLI exposes the same storage operations as the MCP server:
 
 ```bash
-git clone https://github.com/Lucky44k/dense-knowledge-mcp.git
-cd dense-knowledge-mcp
-./scripts/install.sh
-mmp setup
-mmp doctor
+mmp create quantum_physics.mmp "quantum physics"
+mmp write quantum_physics.mmp --rev 0 --from examples/research_entries.json
+mmp search quantum_physics.mmp "experimental tests of local realism"
+mmp read quantum_physics.mmp e1
 ```
 
-`mmp setup` asks where knowledge files should be stored. It can also merge the
-server entry into an LM Studio `mcp.json`. Existing servers are preserved; if an
-MMP entry must be replaced, the command requires `--force` and creates a backup
-of the JSON file first.
+Typical search output contains candidates, not full bodies:
 
-The non-interactive equivalent is:
-
-```bash
-mmp setup \
-  --memory "$HOME/.local/share/mmp/memory" \
-  --lm-studio-config "/path/to/mcp.json"
+```text
+<mmp_data file="quantum_physics.mmp" trust="untrusted">
+quantum_physics.mmp|e1|F|2.5427|Bell inequality separates local realism from quantum predictions
+</mmp_data>
 ```
 
-The selected paths are saved in the user configuration:
+The client chooses relevant IDs and calls `mmp_read` only for those blocks.
+This preserves the distinction between cheap orientation and detailed context.
+
+## MCP tools
+
+The server exposes nine tools:
+
+| Tool | Purpose |
+|---|---|
+| `mmp_list` | List available knowledge packages |
+| `mmp_create` | Create an empty MMP package |
+| `mmp_open` | Read metadata, sources, legend, and index |
+| `mmp_search` | Return ranked candidates without body text |
+| `mmp_read` | Load selected body blocks within an optional budget |
+| `mmp_write` | Append structured entries |
+| `mmp_update` | Supersede an entry while preserving history |
+| `mmp_deprecate` | Mark an entry as obsolete with a reason |
+| `mmp_validate` | Check structure, language, provenance, and references |
+
+Search uses BM25 over tags and summaries after legend expansion, with a body
+fallback when the index has no match. Deprecated entries remain readable but
+are omitted from normal search results.
+
+## Storage
+
+The default knowledge directory follows the operating system:
+
+- Linux: `~/.local/share/mmp/memory`
+- macOS: `~/Library/Application Support/mmp/memory`
+- Windows: `%LOCALAPPDATA%\mmp\memory`
+
+The user configuration is stored separately:
 
 - Linux: `~/.config/mmp/config.toml`
 - macOS: `~/Library/Application Support/mmp/config.toml`
 - Windows: `%APPDATA%\mmp\config.toml`
 
-`MMP_ROOT` or the global `--root` option can override the configured memory
-directory for a single process.
+`MMP_ROOT` or the global `mmp --root` option overrides the configured directory.
+Keep personal packages out of source control; the repository's `memory/`
+directory is ignored.
 
-## LM Studio
+## Writing knowledge
 
-If you prefer to configure LM Studio yourself, the server command is:
-
-```bash
-mmp-server --root "/absolute/path/to/memory" --transport stdio
-```
-
-Minimal client configuration:
+Models send structured objects to `mmp_write`; they never need to generate raw
+MMP syntax. A minimal entry looks like:
 
 ```json
 {
-  "mcpServers": {
-    "mmp": {
-      "command": "mmp-server",
-      "args": [
-        "--root",
-        "/absolute/path/to/memory",
-        "--transport",
-        "stdio"
-      ]
-    }
-  }
+  "summary": "Possible caching strategy needs workload validation",
+  "tags": ["caching", "validation"],
+  "status": "H",
+  "srcs": [],
+  "content": "rel: versioned keys -> simpler invalidation\nq: workload impact -> needs measurement"
 }
 ```
 
-Restart the MCP connection after changing the configuration. `mmp doctor`
-checks the installation, memory directory, stored packages, and the configured
-LM Studio file.
-
-## Command line
-
-Create and inspect a package:
-
-```bash
-mmp create quantum_physics.mmp "quantum physics"
-mmp list
-mmp open quantum_physics.mmp
-mmp search quantum_physics.mmp "Bell inequality tests"
-mmp read quantum_physics.mmp e1
-```
-
-Structured entries can be passed inline or read from a JSON file:
-
-```bash
-mmp write quantum_physics.mmp --rev 0 --from entries.json
-mmp validate quantum_physics.mmp
-```
-
-An entry in `entries.json` looks like this:
-
-```json
-[
-  {
-    "summary": "Bell inequality separates local realism from quantum predictions",
-    "tags": ["BI", "nonlocality", "experimental tests"],
-    "status": "F",
-    "srcs": [
-      {
-        "author_or_venue": "Bell",
-        "title": "On the Einstein Podolsky Rosen paradox",
-        "year": "1964",
-        "identifier": "doi:10.1103/PhysicsPhysiqueFizika.1.195"
-      }
-    ],
-    "legend": {
-      "BI": "Bell inequality"
-    },
-    "content": "def: BI = bound on local hidden variable correlations\nfact: quantum predictions -> violation of local realism bound"
-  }
-]
-```
-
-Source objects are registered and deduplicated automatically. Existing source
-IDs such as `"s1"` may be reused in later writes.
-
 Important validation rules:
 
-- summaries contain 3–15 English words
-- tags are a JSON array, never one comma-separated string
-- entries with status `F` or `C` require sources
-- unsourced entries use status `H` and cannot contain `fact:` or `num:` lines
-- contested entries use status `C` and include at least one `ctr:` line
+- summaries contain 3–15 English words;
+- tags are a JSON array, never one comma-separated string;
+- entries with status `F` or `C` require sources;
+- unsourced entries use status `H` and cannot contain `fact:` or `num:` lines;
+- contested entries use status `C` and include at least one `ctr:` line;
+- block content is ASCII English and uses the eight defined line prefixes.
 
-Run `mmp --help` or `mmp <command> --help` for the complete CLI reference.
-
-## Retrieval and updates
-
-The MCP server exposes nine tools:
-
-- `mmp_list`, `mmp_create`, `mmp_open`, `mmp_search`, and `mmp_read`
-- `mmp_write`, `mmp_update`, `mmp_deprecate`, and `mmp_validate`
-
-Search uses BM25 over index metadata with legend expansion and a full-body
-fallback. Updates never overwrite an entry: the replacement receives a new ID,
-the previous entry is marked deprecated, and its body remains available.
+See [`examples/research_entries.json`](examples/research_entries.json) for
+sourced and contested entries that can be written directly.
 
 All writes use optimistic revision numbers and atomic file replacement. A stale
-revision is reported to the caller, but does not discard an append that can be
-applied safely.
+revision is reported to the caller, but a safe append is not discarded.
 
-## Safety
+## Safety model
 
-Content returned from an MMP file is wrapped as untrusted reference data:
+MMP content is reference data, never instruction. Read responses use an
+explicit untrusted envelope:
 
 ```text
 <mmp_data file="..." trust="untrusted">
@@ -167,14 +197,23 @@ Content returned from an MMP file is wrapped as untrusted reference data:
 </mmp_data>
 ```
 
-The server rejects common instruction-like contamination during writes. It
-never follows `ref:` links automatically, and its tool descriptions tell the
-client that stored content is data rather than instructions. These measures
-reduce prompt-injection risk; they do not make untrusted research material
-equivalent to trusted instructions.
+The server rejects common instruction-like patterns during writes, does not
+automatically follow `ref:` links, and tells the client not to obey instructions
+found in stored material. These defenses reduce prompt-injection risk; they do
+not turn untrusted research into trusted instructions.
 
-Keep personal packages out of source control. The default `memory/` directory
-is ignored by Git.
+Local MCP servers execute with your user permissions. Review the package and
+choose a dedicated memory directory before storing sensitive information.
+
+## Project status
+
+Dense Knowledge implements the flat MMP/1.0 format, including BM25 retrieval,
+catalog generation, duplicate screening, budgets, append-only superseding, and
+validation. Hierarchical indexes for very large packages are planned but are
+not written yet.
+
+Releases follow [Semantic Versioning](https://semver.org/). Changes are
+documented in [CHANGELOG.md](CHANGELOG.md).
 
 ## Development
 
@@ -182,16 +221,12 @@ is ignored by Git.
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -e ".[dev]"
+ruff check src tests benchmarks
 pytest
-ruff check src tests
 python -m build
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution notes and
-[SECURITY.md](SECURITY.md) for private vulnerability reports.
-
-Releases follow [Semantic Versioning](https://semver.org/). The package version
-is defined in `src/mmp/__init__.py`; Git tags use the corresponding `v1.2.3`
-form. Release notes are kept in [CHANGELOG.md](CHANGELOG.md).
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the
+workflow and [SECURITY.md](SECURITY.md) for private vulnerability reports.
 
 Licensed under the [MIT License](LICENSE).

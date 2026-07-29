@@ -102,7 +102,7 @@ def resolve_root(override: str | os.PathLike[str] | None = None) -> Path:
     if environment:
         return Path(environment).expanduser().resolve()
     configured = load_config().root
-    return configured if configured is not None else Path.cwd().resolve()
+    return configured if configured is not None else default_memory_path()
 
 
 def _configured_path(value: str, source: Path) -> Path:
